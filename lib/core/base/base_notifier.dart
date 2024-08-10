@@ -1,7 +1,7 @@
 import 'package:untitle_isar/path_file.dart';
 import 'package:flutter/material.dart';
 
-class BaseNotifier extends ChangeNotifier with DatabaseManager {
+class BaseNotifier extends ChangeNotifier with DBManager {
   bool disposed = false;
 
   BaseNotifier();
