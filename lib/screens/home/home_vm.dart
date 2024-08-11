@@ -8,7 +8,15 @@ class HomeVM extends BaseNotifier {
   HomeVM();
 
   List<UserModel?> users = <UserModel?>[];
-  bool loader = false;
+  bool _loader = false;
+
+  bool get loader => _loader;
+
+  void updateLoader(bool value) {
+    _loader = value;
+    notifyListeners();
+  }
+
   final nameTEC = TextEditingController();
   final ageTEC = TextEditingController();
 
@@ -25,15 +33,26 @@ class HomeVM extends BaseNotifier {
       await Future.delayed(const Duration(seconds: 2));
       await addUser(user);
       setState(ViewState.Idle);
+      await getAllUsers();
+      nameTEC.clear();
+      ageTEC.clear();
       log('===================================================>');
     }
   }
 
-  getAllUsers() async {
-    loader = true;
+  Future<void> getAllUsers() async {
+    log('===============================${users.length}');
+    updateLoader(true);
+    log('===============================$loader');
     await Future.delayed(const Duration(seconds: 5));
     users = await getUsers();
-    loader = false;
-    notifyListeners();
+    updateLoader(false);
+    log('===============================$loader');
+    log('===============================${users.length}');
+  }
+
+  Future<void> deleteUserData(int id) async {
+    await deleteUser(id);
+    await getAllUsers();
   }
 }
