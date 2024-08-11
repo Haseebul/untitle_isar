@@ -8,7 +8,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView(
+    return BaseView<HomeVM>(
       model: HomeVM(),
       onModelReady: (homeVM) async {
         await homeVM.openDB();
@@ -44,16 +44,31 @@ class Home extends StatelessWidget {
                 (homeVM.loader)
                     ? const Center(child: CircularProgressIndicator())
                     : Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: homeVM.users.length,
-                          itemBuilder: (context, index) {
-                            final user = homeVM.users[index];
-                            return ListTile(
-                              title: Text(user?.name ?? ''),
-                              subtitle: Text('${user?.age ?? ''}'),
-                            );
+                        child: RefreshIndicator(
+                          onRefresh: () {
+                            return homeVM.getAllUsers();
                           },
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: homeVM.users.length,
+                            itemBuilder: (context, index) {
+                              final user = homeVM.users[index];
+                              return ListTile(
+                                title: Text(user?.name ?? ''),
+                                subtitle: Text('${user?.age ?? ''}'),
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () async {
+                                    int id = user!.id;
+                                    await homeVM.deleteUserData(id);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
               ],
