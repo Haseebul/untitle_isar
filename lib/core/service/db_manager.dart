@@ -28,6 +28,8 @@ mixin DBManager {
   }
 
   Future<void> deleteUser(int id) async {
-    await isar.userModels.delete(id);
+    await isar.writeTxn(() async {
+      await isar.userModels.delete(id);
+    });
   }
 }
