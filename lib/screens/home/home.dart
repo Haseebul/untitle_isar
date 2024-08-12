@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:untitle_isar/core/base/base_view.dart';
 import 'package:untitle_isar/core/base/view_state.dart';
 import 'package:untitle_isar/screens/home/home_vm.dart';
@@ -23,6 +24,14 @@ class Home extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
+                LinearPercentIndicator(
+                  width: 140.0,
+                  lineHeight: 14.0,
+                  percent: 0.5,
+                  barRadius: const Radius.circular(10),
+                  backgroundColor: Colors.grey,
+                  progressColor: Colors.blue,
+                ),
                 TextFormField(
                   decoration: const InputDecoration(hintText: 'Name'),
                   controller: homeVM.nameTEC,

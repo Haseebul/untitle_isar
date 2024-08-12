@@ -55,4 +55,9 @@ class HomeVM extends BaseNotifier {
     await deleteUser(id);
     await getAllUsers();
   }
+  @override
+  void dispose() {
+    disposed = false;
+    super.dispose();
+  }
 }
